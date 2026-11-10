@@ -1,0 +1,5 @@
+<!-- Contract fixture: current-select/placeholder-text observed live; option layout synthetic until live verification. -->
+<span class="city-label">深圳</span><input placeholder="搜索职位、公司" value="Java开发工程师"><button class="search-btn">搜索</button>
+<div class="experience-control"><div class="current-select"><span class="placeholder-text">工作经验</span></div><div class="options"><span>不限</span><span>1-3年</span><span>3-5年</span></div></div>
+<div class="job-card-box"><a class="job-name" href="/job_detail/j1.html">Java</a><span class="company-name">测试公司</span><ul><li>1-3年</li><li>本科</li></ul><span>深圳</span></div>
+<script>document.querySelectorAll('.options span').forEach(e=>e.onclick=()=>{document.querySelector('.current-select span').textContent=e.textContent;document.querySelector('.job-card-box li').textContent=e.textContent;});</script>

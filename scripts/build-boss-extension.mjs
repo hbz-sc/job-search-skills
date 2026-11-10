@@ -1,0 +1,15 @@
+import {mkdir,readFile,writeFile,copyFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const src=path.join(root,'extensions/boss-page');const dest=path.join(root,'dist/boss-extension');
+const manifest=JSON.parse(await readFile(path.join(src,'manifest.json'),'utf8'));
+if(manifest.permissions.some(p=>!['debugger','nativeMessaging','storage','webNavigation','scripting'].includes(p))||JSON.stringify(manifest.host_permissions)!=='["https://www.zhipin.com/*"]'||manifest.optional_permissions?.length)throw Error('Unexpected extension permissions');
+await mkdir(dest,{recursive:true});
+for(const file of ['manifest.json','background.js','controller.js','workflow-controller.js','current-list-session.js','current-list-actions.js','selectors.js','search-actions.js','search-filters.js','experience-dom.js','chat-actions.js','experience-pointer.js','action-executor.js','journal.js','binding.js','popup.html','popup.js'])await copyFile(path.join(src,file),path.join(dest,file));
+const sources=await Promise.all(['selectors.js','experience-dom.js','search-filters.js','search-actions.js','chat-actions.js','current-list-actions.js','action-executor.js','dom-adapter.js','content.js'].map(f=>readFile(path.join(src,f),'utf8')));
+await writeFile(path.join(dest,'content.bundle.js'),'(()=>{\n'+sources.map(s=>s.replace(/^import .*;\r?\n/gm,'').replaceAll('export ','')).join('\n')+'\n})();\n');
+const id=createHash('sha256').update(Buffer.from(manifest.key,'base64')).digest('hex').slice(0,32).replace(/[0-9a-f]/g,c=>String.fromCharCode(97+parseInt(c,16)));
+await writeFile(path.join(dest,'extension-id.txt'),id+'\n');
+console.log('Extension built: '+dest+'\nExtension ID: '+id);

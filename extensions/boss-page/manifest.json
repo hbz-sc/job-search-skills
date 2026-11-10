@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "BOSS 页面诊断",
+  "version": "0.8.0",
+  "minimum_chrome_version": "106",
+  "description": "连接已打开的 BOSS 页面，按运行范围搜索、沟通并记录每个操作阶段。",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3fgbC+FhcO15t53py2AFN87e23sADBuKfDM+Jvwwh21cYyEv75gE39oaCU+kT0R4MtoxNIS4EGEh7c12cNcIOrzwuaM72KLxlRCc7NfaY5u0ocau3+B+NBIFOOiulkwd0IOAomn4CW1AeZdGZeS3nSh+xb/CBXeREL8Qf71zKy/zY6jh3i69R6XZNO3Nv3E3GdE37Z9bOz/mggOwEIF5kdmtUvbMDA0LdO17rlzsoVjoBk9OZ7zjpbjy1HGOPTqMltr+u5p8DpnBWUR0gJ14mVs6ox9wQlTAlO7OqprHJkdYPi9umKwUMy85/zL6DxnAj+THXC/FoPWo2KFTNiGRswIDAQAB",
+  "permissions": [
+    "debugger",
+    "nativeMessaging",
+    "storage",
+    "webNavigation",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://www.zhipin.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

@@ -1,0 +1,14 @@
+import type {z} from 'zod';import type * as s from './schemas.js';
+export type Evidence=z.infer<typeof s.evidenceSchema>;export type Preferences=z.infer<typeof s.preferencesSchema>;
+export type JobSummary=z.infer<typeof s.summarySchema>;export type JobDetailInput=z.infer<typeof s.detailInputSchema>;
+export type JobDetail=JobDetailInput&{hash:string;evidence:Evidence[]};
+export type JobBundle={schemaVersion:1;summaries:JobSummary[];details:JobDetail[];initialDetailIds:string[]};
+export type ResumeDocument={text:string;hash:string;evidence:Evidence[]};
+export type Analysis=z.infer<typeof s.analysisSchema>;export type Draft=z.infer<typeof s.draftSchema>;
+export type Profile=z.infer<typeof s.profileSchema>;export type ReviewRequest=z.infer<typeof s.reviewSchema>;
+export type ValidatedInputs={resume:ResumeDocument;jobs:JobBundle;preferences:Preferences;sourceMode:'local'};
+export type InputSnapshot={file:string;hashes:{resume:string;jobs:string;preferences:string};schemaVersion:1};
+export type DetailObservation={status:'ok';detail:JobDetail}|{status:'not_found'|'unavailable';message:string};
+export type TaskStatus='queued'|'running'|'waiting_review'|'completed'|'partial'|'failed';
+export type JobResult={threadId:string;batchId:string;jobId:string;draftVersion:number;taskStatus:TaskStatus;analysis?:Analysis;draft?:Draft;review?:ReviewRequest;error?:string;provenance:Record<string,unknown>};
+export type BatchStatus={batchId:string;tasks:{threadId:string;jobId:string;status:TaskStatus;draftVersion?:number;error?:string}[]};

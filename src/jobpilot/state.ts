@@ -1,0 +1,4 @@
+import {Annotation} from '@langchain/langgraph';import type {BaseMessageLike} from '@langchain/core/messages';
+import type {Analysis,Draft,Profile,ResumeDocument,Preferences,JobSummary,JobDetail,ReviewRequest,TaskStatus} from './types.js';import type {ModelResponse} from './model.js';
+export type JobState={schemaVersion:1;threadId:string;batchId:string;jobId:string;resume:ResumeDocument;profile:Profile;preferences:Preferences;jobSummary:JobSummary;jobDetail?:JobDetail;inputHashes?:Record<string,string>;execution?:{model:string;promptVersion:string};toolMessages?:BaseMessageLike[];decision?:ModelResponse;decisionTurns?:number;researchDone?:boolean;analysis?:Analysis;draft?:Draft;draftVersion?:number;review?:ReviewRequest;status?:TaskStatus;error?:string;revisionCount?:number};
+export const State=Annotation.Root({data:Annotation<JobState>});

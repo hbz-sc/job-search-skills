@@ -1,0 +1,18 @@
+{
+  "dev": [
+    "strong-1",
+    "strong-2",
+    "partial-1",
+    "partial-2",
+    "mismatch-1",
+    "recoverable-1",
+    "missing-1",
+    "injection-1"
+  ],
+  "holdout": [
+    "strong-3",
+    "partial-3",
+    "mismatch-2",
+    "recoverable-2"
+  ]
+}

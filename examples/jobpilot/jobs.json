@@ -1,0 +1,12 @@
+{
+ "schemaVersion":1,
+ "summaries":[
+  {"jobId":"demo-java","title":"Java全栈开发","company":"虚构星河软件","city":"深圳","salary":"15-25K","source":"synthetic","capturedAt":"2026-11-01"},
+  {"jobId":"demo-ai","title":"Java AI应用开发","company":"虚构青山科技","city":"深圳","source":"synthetic","capturedAt":"2026-11-01"}
+ ],
+ "details":[
+  {"jobId":"demo-java","description":"要求 Java 和 Spring Boot 后端开发经验。\n能够使用 MySQL 设计业务数据表。\n熟悉 Vue 前端开发优先。","source":"synthetic","capturedAt":"2026-11-01"},
+  {"jobId":"demo-ai","description":"要求 Java 后端开发能力，熟悉 Spring Boot。\n了解大模型 API 的集成方式。\n有生产环境 Agent 工作流开发经验优先。","source":"synthetic","capturedAt":"2026-11-01"}
+ ],
+ "initialDetailIds":["demo-java"]
+}

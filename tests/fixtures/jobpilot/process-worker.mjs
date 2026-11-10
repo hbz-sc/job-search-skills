@@ -1,0 +1,8 @@
+import path from 'node:path';import {readFileSync,writeFileSync,existsSync} from 'node:fs';import {Command} from '@langchain/langgraph';
+import {openCheckpointer} from '../../../dist/src/jobpilot/checkpointer.js';import {openJobpilotStore} from '../../../dist/src/jobpilot/store.js';import {buildJobGraph} from '../../../dist/src/jobpilot/graph.js';import {loadJobpilotConfig} from '../../../dist/src/jobpilot/config.js';import {LocalJobSource} from '../../../dist/src/jobpilot/tools/local-jobs.js';import {demoInput,fakeModel} from '../../../dist/tests/fixtures/jobpilot/model.js';
+const [root,threadId,mode,reviewId]=process.argv.slice(2);const countsFile=path.join(root,'counts.json');const counts=existsSync(countsFile)?JSON.parse(readFileSync(countsFile,'utf8')):{};
+const handle=await openCheckpointer(path.join(root,'cp.sqlite'));const store=openJobpilotStore(path.join(root,'app.sqlite'));const input=demoInput();
+try{const graph=buildJobGraph({model:fakeModel(op=>{counts[op]=(counts[op]??0)+1;writeFileSync(countsFile,JSON.stringify(counts));}),store,source:new LocalJobSource(input.jobs),checkpointer:handle.saver,config:loadJobpilotConfig({})});const config={configurable:{thread_id:threadId}};
+ const result=await graph.invoke(mode==='start'?{data:{schemaVersion:1,threadId,batchId:'batch',jobId:'j',resume:input.resume,profile:{facts:[]},preferences:input.preferences,jobSummary:input.jobs.summaries[0],jobDetail:input.jobs.details[0]}}:new Command({resume:{reviewId,threadId,draftVersion:1,decision:'approve'}}),config);
+ console.log(JSON.stringify({interrupted:!!result.__interrupt__?.length,status:result.data.status,counts}));
+}finally{store.close();await handle.close();}

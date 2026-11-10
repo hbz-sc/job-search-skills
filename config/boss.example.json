@@ -1,0 +1,8 @@
+{
+  "mode": "collect",
+  "city": "深圳",
+  "connection": {"kind": "extension", "profileDirName": "Default"},
+  "keywords": ["AI应用开发工程师"],
+  "actionTimeoutMs": 15000,
+  "intervalMs": 5000
+}

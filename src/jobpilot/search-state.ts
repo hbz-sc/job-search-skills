@@ -1,0 +1,3 @@
+import {Annotation} from '@langchain/langgraph';import type {SearchQuery} from './search-types.js';import type {PageJob} from '../boss-extension/store.js';import type {SearchView} from '../boss-extension/search-protocol.js';
+export type SearchStateData={batchId:string;queryIndex:number;step:number;seenJobKeys:string[];candidates:PageJob[];status:'running'|'paused'|'completed';query?:SearchQuery;view?:SearchView;currentJob?:PageJob;attemptId?:string;chat?:{conversationKey:string;title:string;company:string;recruiter:string};choice?:string;stopReason?:string;queryDone?:boolean;countNoNew?:boolean;advance?:boolean;skipCurrent?:boolean};
+export const SearchState=Annotation.Root({data:Annotation<SearchStateData>});

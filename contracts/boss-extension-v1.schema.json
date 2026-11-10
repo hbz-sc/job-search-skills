@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BOSS extension phase-one command",
+  "type": "object", "additionalProperties": false,
+  "required": ["version", "tool", "context", "payload"],
+  "properties": {
+    "version": {"const": 1},
+    "tool": {"enum": ["inspect_session"]},
+    "payload": {"type": "object", "additionalProperties": false},
+    "context": {
+      "type": "object", "additionalProperties": false,
+      "required": ["runId", "requestId", "binding", "deadline"],
+      "properties": {
+        "runId": {"type": "string", "minLength": 1, "maxLength": 100, "pattern": "^[a-zA-Z0-9_-]+$"},
+        "requestId": {"type": "string", "minLength": 1, "maxLength": 100, "pattern": "^[a-zA-Z0-9_-]+$"},
+        "deadline": {"type": "string", "format": "date-time"},
+        "binding": {
+          "type": "object", "additionalProperties": false,
+          "required": ["sessionId", "tabId", "frameId", "documentId"],
+          "properties": {
+            "sessionId": {"type": "string", "minLength": 1},
+            "tabId": {"type": "integer", "minimum": 0},
+            "frameId": {"const": 0},
+            "documentId": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+[project]
+name = "boss-page-bridge"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = ["fastmcp==2.13.0", "uvicorn==0.54.0", "jsonschema==4.26.0"]

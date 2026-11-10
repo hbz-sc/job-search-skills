@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "playwright-edge": {
+      "command": "C:/Users/30584/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node.exe",
+      "args": [
+        "D:/code/job-search-skills/node_modules/@playwright/mcp/cli.js",
+        "--extension",
+        "--browser", "msedge",
+        "--image-responses", "omit",
+        "--no-webmcp",
+        "--output-dir", "D:/code/job-search-skills/output/playwright-mcp"
+      ]
+    }
+  }
+}

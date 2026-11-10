@@ -1,0 +1,4 @@
+interface:
+  display_name: "深圳求职助手"
+  short_description: "根据简历筛选深圳全栈与 AI 应用岗位，整理 Boss 会话和人工投递建议"
+  default_prompt: "使用 $shenzhen-job-search，根据本地简历筛选深圳岗位并准备会话回复，由我手动发送和投递。"

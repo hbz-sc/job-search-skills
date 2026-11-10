@@ -1,0 +1,32 @@
+private/
+data/
+output/
+.env
+.env.*
+!.env.example
+cookies/
+**/cookies/
+**/search_results/
+**/__pycache__/
+**/.venv/
+.venv-mcp-bosszp/
+.venv-jobpilot/
+python/*.egg-info/
+**/node_modules/
+*.log
+dist/
+.superpowers/
+.vitest/
+
+# Downloaded reference repositories; retain source provenance only.
+upstream/*/
+.idea/
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.pem
+*.key
+
+# Local resume import utility with personal filenames.
+scripts/prepare_project.py

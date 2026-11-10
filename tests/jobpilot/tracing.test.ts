@@ -1,0 +1,7 @@
+import {test,expect} from 'vitest';import {createServer} from 'node:http';import {spawn} from 'node:child_process';import {mkdtemp} from 'node:fs/promises';import {tmpdir} from 'node:os';import path from 'node:path';
+test('inherited tracing flags export neither model prompts nor graph state',async()=>{
+ const paths:string[]=[];const server=createServer((req,res)=>{paths.push(req.url??'');req.resume();req.on('end',()=>{res.setHeader('Content-Type','application/json');res.end(req.url==='/v1/chat/completions'?JSON.stringify({id:'c',object:'chat.completion',created:0,model:'synthetic',choices:[{index:0,message:{role:'assistant',content:'ok'},finish_reason:'stop'}]}):'{}');});});
+ await new Promise<void>(r=>server.listen(0,'127.0.0.1',r));const url=`http://127.0.0.1:${(server.address() as {port:number}).port}`;const root=await mkdtemp(path.join(tmpdir(),'jp-trace-'));
+ try{const child=spawn(process.execPath,['tests/fixtures/jobpilot/tracing-worker.mjs',root,url],{windowsHide:true,env:{...process.env,LANGSMITH_TRACING:'true',LANGCHAIN_TRACING_V2:'true',LANGCHAIN_CALLBACKS_BACKGROUND:'false',LANGSMITH_ENDPOINT:url,LANGCHAIN_ENDPOINT:url,LANGSMITH_API_KEY:'synthetic'},stdio:['ignore','ignore','pipe']});let stderr='';child.stderr.on('data',c=>stderr+=String(c));const code=await new Promise<number|null>((resolve,reject)=>{child.once('error',reject);child.once('exit',resolve);});expect(code,stderr).toBe(0);expect(paths).toEqual(['/v1/chat/completions']);
+ }finally{await new Promise<void>((resolve,reject)=>server.close(e=>e?reject(e):resolve()));}
+},30000);

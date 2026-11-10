@@ -1,0 +1,16 @@
+import {z} from 'zod';
+export const ROLE_KEYWORDS={java_backend:'Java开发工程师',java_fullstack:'Java全栈开发工程师',fullstack:'全栈开发工程师',ai_application:'AI应用开发工程师',agent_application:'Agent应用开发工程师'} as const;
+export type RoleId=keyof typeof ROLE_KEYWORDS;
+export const roleIdSchema=z.enum(['java_backend','java_fullstack','fullstack','ai_application','agent_application']);
+export const experienceSchema=z.enum(['exp_1_3','exp_3_5']);
+export type ExperienceBand=z.infer<typeof experienceSchema>;
+export const EXPERIENCE_BANDS:ExperienceBand[]=['exp_1_3','exp_3_5'];
+export const searchQuerySchema=z.object({keyword:z.enum(Object.values(ROLE_KEYWORDS) as [string,...string[]]),city:z.enum(['深圳','current']),experience:experienceSchema}).strict();
+export type SearchQuery=z.infer<typeof searchQuerySchema>;
+export const roleChoiceSchema=z.object({roleId:roleIdSchema,evidenceIds:z.array(z.string().min(1)).min(1).max(20),reason:z.string().trim().min(1).max(500)}).strict();
+export const searchChoiceSchema=z.object({roles:z.array(roleChoiceSchema).max(4)}).strict();
+const digest=z.string().regex(/^[a-f0-9]{64}$/);
+export const searchPlanSchema=z.object({planId:z.uuid(),planHash:digest,resumeHash:digest,model:z.string().min(1),promptVersion:z.string().min(1),roles:z.array(roleChoiceSchema.extend({keyword:z.string(),priority:z.number().int().min(1).max(4)})).max(4),city:z.literal('深圳'),experienceBands:z.tuple([z.literal('exp_1_3'),z.literal('exp_3_5')])}).strict();
+export type SearchPlan=z.infer<typeof searchPlanSchema>;
+export type SearchRole=SearchPlan['roles'][number];
+export type GreetingTemplate={templateId:string;expectedText:string;normalizedHash:string;source:string;boundAt:string};

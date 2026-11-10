@@ -1,0 +1,11 @@
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+if (!process.versions.node.startsWith('24.')) throw new Error('Node 24 required');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const [command = 'status', ...args] = process.argv.slice(2);
+const entries = {build:['node_modules/typescript/bin/tsc'],typecheck:['node_modules/typescript/bin/tsc','--noEmit'],test:['node_modules/vitest/vitest.mjs','run'],'extension:build':['scripts/build-boss-extension.mjs'],'browser-install':['node_modules/playwright/cli.js','install','chromium']};
+const selected = command==='jobpilot-ts' ? ['dist/src/jobpilot/cli.js'] : command==='extension' ? ['dist/src/boss-extension/cli.js'] : entries[command] || ['dist/src/cli.js',command];
+const result = spawnSync(process.execPath, [...selected,...args], {cwd:root,stdio:'inherit'});
+if (result.error) console.error(result.error.message);
+process.exit(result.status ?? 1);

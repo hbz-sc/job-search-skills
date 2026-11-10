@@ -1,0 +1,9 @@
+{
+  "jobs": [
+    {"jobId": "learn-python", "title": "Python 后端开发", "company": "虚构星河", "city": "深圳", "salary": "15-25K", "url": "https://example.com/jobs/python", "description": "Python、FastAPI、SQL"},
+    {"jobId": "learn-python-copy", "title": "Python 后端开发（重复）", "city": "深圳", "url": "https://example.com/jobs/python"},
+    {"jobId": "learn-ai", "title": "AI 应用开发", "company": "虚构青山", "city": "深圳"},
+    {"jobId": "learn-other", "title": "全栈开发", "city": "北京", "description": "React、Python"},
+    {"jobId": "learn-unknown", "title": "Agent 开发", "company": "虚构海风"}
+  ]
+}

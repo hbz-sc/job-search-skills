@@ -1,0 +1,5 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>BOSS 页面诊断</title>
+<style>body{font:14px system-ui;width:340px;padding:16px;color:#153b41}button{padding:9px;margin:6px 4px 6px 0}pre{white-space:pre-wrap;max-height:300px;overflow:auto;font-size:11px}#state{padding:10px;background:#e9f7f7}</style>
+<h2>BOSS 页面诊断</h2><p>首次连接已登录的 BOSS 页面后，同一标签刷新会自动重连。正在运行的搜索任务最多自动恢复3次；点击“停止并断开”可撤销连接。</p>
+<p>0.8.0 默认保留人工经验筛选；固定岗位入口显式授权 auto 时，自动选择并核验“1–3年”和“3–5年”。未知控件或选中状态会停止。</p>
+<p id="state">正在检查状态…</p><button id="connect">连接此页面</button><button id="disconnect">停止并断开</button><button id="diagnostics">查看连接记录</button><pre id="events"></pre><script src="popup.js"></script></html>

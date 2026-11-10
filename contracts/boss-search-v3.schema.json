@@ -1,0 +1,613 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "tool",
+    "context",
+    "payload"
+  ],
+  "properties": {
+    "version": {
+      "const": 3
+    },
+    "tool": {
+      "enum": [
+        "start_run",
+        "renew_run",
+        "search_jobs",
+        "list_jobs",
+        "open_job",
+        "restore_search",
+        "open_chat",
+        "inspect_chat",
+        "read_first_phrase",
+        "choose_first_phrase",
+        "submit_filled_phrase",
+        "inspect_send_result",
+        "read_saved_phrase"
+      ]
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runId",
+        "requestId",
+        "leaseId",
+        "binding",
+        "deadline"
+      ],
+      "properties": {
+        "runId": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,100}$"
+        },
+        "requestId": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,100}$"
+        },
+        "leaseId": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,100}$"
+        },
+        "binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "sessionId",
+            "tabId",
+            "frameId",
+            "documentId"
+          ],
+          "properties": {
+            "sessionId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "tabId": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "frameId": {
+              "const": 0
+            },
+            "documentId": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "deadline": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "tool": {
+            "const": "start_run"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "mode",
+              "batchId",
+              "planHash",
+              "allowedKeywords",
+              "city",
+              "experienceBands",
+              "maxContacts",
+              "expectedPhraseHash"
+            ],
+            "properties": {
+              "mode": {
+                "enum": [
+                  "preview",
+                  "run"
+                ]
+              },
+              "batchId": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9_-]{1,100}$"
+              },
+              "planHash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "allowedKeywords": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 4,
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "Java开发工程师",
+                    "Java全栈开发工程师",
+                    "全栈开发工程师",
+                    "AI应用开发工程师",
+                    "Agent应用开发工程师"
+                  ]
+                }
+              },
+              "city": {
+                "enum": ["深圳", "current"]
+              },
+              "experienceBands": {
+                "const": [
+                  "exp_1_3",
+                  "exp_3_5"
+                ]
+              },
+              "maxContacts": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 150
+              },
+              "expectedPhraseHash": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "experienceMode": {
+                "type": "string",
+                "enum": [
+                  "manual",
+                  "auto"
+                ]
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "mode": {
+                      "const": "preview"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "maxContacts": {
+                      "const": 0
+                    }
+                  }
+                },
+                "else": {
+                  "properties": {
+                    "expectedPhraseHash": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tool": {
+            "const": "renew_run"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [],
+            "properties": {}
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tool": {
+            "const": "search_jobs"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "city",
+              "keyword",
+              "experience"
+            ],
+            "properties": {
+              "city": {
+                "enum": ["深圳", "current"]
+              },
+              "keyword": {
+                "enum": [
+                  "Java开发工程师",
+                  "Java全栈开发工程师",
+                  "全栈开发工程师",
+                  "AI应用开发工程师",
+                  "Agent应用开发工程师"
+                ]
+              },
+              "experience": {
+                "enum": [
+                  "exp_1_3",
+                  "exp_3_5"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tool": {
+            "const": "list_jobs"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "city",
+              "keyword",
+              "experience",
+              "advance"
+            ],
+            "properties": {
+              "city": {
+                "enum": ["深圳", "current"]
+              },
+              "keyword": {
+                "enum": [
+                  "Java开发工程师",
+                  "Java全栈开发工程师",
+                  "全栈开发工程师",
+                  "AI应用开发工程师",
+                  "Agent应用开发工程师"
+                ]
+              },
+              "experience": {
+                "enum": [
+                  "exp_1_3",
+                  "exp_3_5"
+                ]
+              },
+              "advance": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tool": {
+            "const": "open_job"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "jobKey"
+            ],
+            "properties": {
+              "jobKey": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9_-]{1,200}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tool": {
+            "const": "restore_search"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "city",
+              "keyword",
+              "experience"
+            ],
+            "properties": {
+              "city": {
+                "enum": ["深圳", "current"]
+              },
+              "keyword": {
+                "enum": [
+                  "Java开发工程师",
+                  "Java全栈开发工程师",
+                  "全栈开发工程师",
+                  "AI应用开发工程师",
+                  "Agent应用开发工程师"
+                ]
+              },
+              "experience": {
+                "enum": [
+                  "exp_1_3",
+                  "exp_3_5"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tool": {
+            "const": "open_chat"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "jobKey"
+            ],
+            "properties": {
+              "jobKey": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9_-]{1,200}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tool": {
+            "const": "inspect_chat"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "conversationKey"
+            ],
+            "properties": {
+              "conversationKey": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9_-]{1,200}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tool": {
+            "const": "read_first_phrase"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "conversationKey"
+            ],
+            "properties": {
+              "conversationKey": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9_-]{1,200}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tool": {
+            "const": "choose_first_phrase"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "conversationKey",
+              "expectedHash"
+            ],
+            "properties": {
+              "conversationKey": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9_-]{1,200}$"
+              },
+              "expectedHash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tool": {
+            "const": "submit_filled_phrase"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "conversationKey",
+              "expectedHash"
+            ],
+            "properties": {
+              "conversationKey": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9_-]{1,200}$"
+              },
+              "expectedHash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "receipt": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "beforeCount",
+                  "beforeHash"
+                ],
+                "properties": {
+                  "beforeCount": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10000
+                  },
+                  "beforeHash": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tool": {
+            "const": "inspect_send_result"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "conversationKey",
+              "expectedHash"
+            ],
+            "properties": {
+              "conversationKey": {
+                "type": "string",
+                "pattern": "^[a-zA-Z0-9_-]{1,200}$"
+              },
+              "expectedHash": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "receipt": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "beforeCount",
+                  "beforeHash"
+                ],
+                "properties": {
+                  "beforeCount": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 10000
+                  },
+                  "beforeHash": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "tool": {
+            "const": "read_saved_phrase"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [],
+            "properties": {}
+          }
+        }
+      }
+    }
+  ]
+}

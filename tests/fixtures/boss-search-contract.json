@@ -1,0 +1,17 @@
+{
+ "scope":{"mode":"run","batchId":"batch","planHash":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","allowedKeywords":["Java开发工程师"],"city":"深圳","experienceBands":["exp_1_3","exp_3_5"],"maxContacts":1,"expectedPhraseHash":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+ "vectors":[
+  {"name":"normal","patch":{},"valid":true},
+  {"name":"zero-remaining","patch":{"maxContacts":0},"valid":true},
+  {"name":"preview","patch":{"mode":"preview","maxContacts":0,"expectedPhraseHash":null},"valid":true},
+  {"name":"wrong-city","patch":{"city":"北京"},"valid":false},
+  {"name":"unbounded-keyword","patch":{"allowedKeywords":["任意搜索"]},"valid":false},
+  {"name":"duplicate-keyword","patch":{"allowedKeywords":["Java开发工程师","Java开发工程师"]},"valid":false},
+  {"name":"wrong-experience","patch":{"experienceBands":["exp_5_10"]},"valid":false},
+  {"name":"extra-field","patch":{"script":"forbidden"},"valid":false},
+  {"name":"run-without-template","patch":{"expectedPhraseHash":null},"valid":false},
+  {"name":"preview-with-contacts","patch":{"mode":"preview"},"valid":false},
+  {"name":"over-budget","patch":{"maxContacts":151},"valid":false}
+ ]
+}
+

@@ -1,0 +1,2 @@
+import {randomUUID} from 'node:crypto';import {planDigest} from '../../../src/jobpilot/search-plan.js';import type {SearchPlan} from '../../../src/jobpilot/search-types.js';
+export function fixturePlan():SearchPlan{const p={planId:randomUUID(),resumeHash:'a'.repeat(64),model:'fixture',promptVersion:'v1',roles:[{roleId:'java_backend' as const,keyword:'Java开发工程师',priority:1,evidenceIds:['resume:e:0'],reason:'Java项目'}],city:'深圳' as const,experienceBands:['exp_1_3','exp_3_5'] as ['exp_1_3','exp_3_5']};return {...p,planHash:planDigest(p)};}
